@@ -26,6 +26,10 @@ namespace taskHardStat
 
         static double[] GetStat(int[] arr)
         {
+            if (arr.Length == 0)
+            {
+                throw new ArgumentException("Array should be of length 1 or more");
+            }
             double minIndex = 0;
             double maxIndex = 0;
             double min = arr[0];
