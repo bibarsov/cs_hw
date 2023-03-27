@@ -1,15 +1,13 @@
 ﻿/*
-Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит по убыванию элементы каждой строки двумерного массива.
+Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.
 Например, задан массив:
 1 4 7 2
 5 9 2 3
 8 4 2 4
-В итоге получается вот такой массив:
-7 4 2 1
-9 5 3 2
-8 4 4 2
-*/
-namespace task54
+5 2 6 7
+Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов: 1 строка
+ */
+namespace task56
 {
     class Program
     {
@@ -20,40 +18,32 @@ namespace task54
             int[,] twoDimArr = GenerateTwoDimArray(n, m);
 
             PrintTwoDimArray(twoDimArr);
-            Console.WriteLine(".................");
-            Console.WriteLine("Sorting...");
-            SortTwoDimArr(twoDimArr);
-            Console.WriteLine(".................");
-            PrintTwoDimArray(twoDimArr);
+            int? rowIndex = GetRowIndexWithSmallestSum(twoDimArr);
+            if (rowIndex != null)
+            {
+                Console.WriteLine("{0} row", rowIndex + 1);
+            }
         }
 
-        static void SortTwoDimArr(int[,] twoDimArr)
+        static int? GetRowIndexWithSmallestSum(int[,] twoDimArr)
         {
+            int? rowSmallestSum = null;
+            int? rowSmallestSumIdx = null;
             for (int i = 0; i < twoDimArr.GetLength(0); i++)
             {
-                bool sorted = false;
-                while (!sorted)
+                int sum = 0;
+                for (int j = 0; j < twoDimArr.GetLength(1); j++)
                 {
-                    sorted = true;
-                    int biggestIdx = 0;
-                    for (int j = 1; j < twoDimArr.GetLength(1); j++)
-                    {
-                        if (twoDimArr[i, j] > twoDimArr[i, biggestIdx])
-                        {
-                            sorted = false;
-                            int temp = twoDimArr[i, biggestIdx];
-                            twoDimArr[i, biggestIdx] = twoDimArr[i, j];
-                            twoDimArr[i, j] = temp;
-                            biggestIdx = j;
-                        }
-                    }
-                    if (sorted)
-                    {
-                        break;
-                    }
+                    sum += twoDimArr[i, j];
                 }
 
+                if (rowSmallestSum == null || sum < rowSmallestSum)
+                {
+                    rowSmallestSum = sum;
+                    rowSmallestSumIdx = i;
+                }
             }
+            return rowSmallestSumIdx;
         }
 
         static int ReadInteger(string message)
@@ -91,3 +81,4 @@ namespace task54
         }
     }
 }
+
